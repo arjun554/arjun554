@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+option csharp_namespace = "FoodDash.Shared.Grpc";
+
+package payments;
+
+// Payment Service
+service PaymentService {
+  rpc ProcessPayment (ProcessPaymentRequest) returns (PaymentResponse);
+  rpc GetPaymentStatus (GetPaymentStatusRequest) returns (PaymentResponse);
+  rpc RefundPayment (RefundPaymentRequest) returns (PaymentResponse);
+  rpc ValidateCoupon (ValidateCouponRequest) returns (CouponResponse);
+}
+
+// Messages
+message ProcessPaymentRequest {
+  int32 order_id = 1;
+  string payment_method = 2;
+  double amount = 3;
+  string customer_id = 4;
+  PaymentDetails payment_details = 5;
+}
+
+message PaymentDetails {
+  string gateway_token = 1;
+  string card_last_four = 2;
+  string transaction_reference = 3;
+  map<string, string> additional_data = 4;
+}
+
+message GetPaymentStatusRequest {
+  int32 order_id = 1;
+  string transaction_id = 2;
+}
+
+message RefundPaymentRequest {
+  int32 order_id = 1;
+  string transaction_id = 2;
+  double refund_amount = 3;
+  string reason = 4;
+}
+
+message ValidateCouponRequest {
+  string coupon_code = 1;
+  int32 restaurant_id = 2;
+  double order_amount = 3;
+  int32 customer_id = 4;
+}
+
+message PaymentResponse {
+  bool success = 1;
+  string message = 2;
+  PaymentData payment = 3;
+}
+
+message CouponResponse {
+  bool success = 1;
+  string message = 2;
+  CouponData coupon = 3;
+}
+
+message PaymentData {
+  int32 id = 1;
+  int32 order_id = 2;
+  string transaction_id = 3;
+  string payment_method = 4;
+  double amount = 5;
+  string status = 6;
+  string gateway_response = 7;
+  string created_at = 8;
+  string processed_at = 9;
+}
+
+message CouponData {
+  int32 id = 1;
+  string code = 2;
+  string description = 3;
+  string discount_type = 4;
+  double discount_value = 5;
+  double max_discount_amount = 6;
+  double minimum_order_amount = 7;
+  bool is_valid = 8;
+  double calculated_discount = 9;
+}

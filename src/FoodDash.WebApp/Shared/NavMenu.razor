@@ -1,0 +1,119 @@
+@inject AuthenticationStateProvider AuthStateProvider
+
+<MudNavMenu>
+    <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">
+        Home
+    </MudNavLink>
+
+    <AuthorizeView>
+        <Authorized>
+            @{
+                var userRole = GetUserRole(context);
+            }
+
+            @if (userRole == UserRole.Customer || userRole == UserRole.Admin)
+            {
+                <MudNavGroup Text="Browse" Icon="@Icons.Material.Filled.Restaurant" Expanded="true">
+                    <MudNavLink Href="/restaurants" Icon="@Icons.Material.Filled.RestaurantMenu">
+                        Restaurants
+                    </MudNavLink>
+                    <MudNavLink Href="/my-orders" Icon="@Icons.Material.Filled.Receipt">
+                        My Orders
+                    </MudNavLink>
+                    <MudNavLink Href="/cart" Icon="@Icons.Material.Filled.ShoppingCart">
+                        Cart
+                    </MudNavLink>
+                </MudNavGroup>
+            }
+
+            @if (userRole == UserRole.RestaurantOwner || userRole == UserRole.Admin)
+            {
+                <MudNavGroup Text="Restaurant" Icon="@Icons.Material.Filled.Business" Expanded="true">
+                    <MudNavLink Href="/restaurant/dashboard" Icon="@Icons.Material.Filled.Dashboard">
+                        Dashboard
+                    </MudNavLink>
+                    <MudNavLink Href="/restaurant/orders" Icon="@Icons.Material.Filled.ListAlt">
+                        Orders
+                    </MudNavLink>
+                    <MudNavLink Href="/restaurant/menu" Icon="@Icons.Material.Filled.MenuBook">
+                        Menu Management
+                    </MudNavLink>
+                    <MudNavLink Href="/restaurant/settings" Icon="@Icons.Material.Filled.Settings">
+                        Restaurant Settings
+                    </MudNavLink>
+                </MudNavGroup>
+            }
+
+            @if (userRole == UserRole.DeliveryPartner || userRole == UserRole.Admin)
+            {
+                <MudNavGroup Text="Delivery" Icon="@Icons.Material.Filled.DeliveryDining" Expanded="true">
+                    <MudNavLink Href="/delivery/dashboard" Icon="@Icons.Material.Filled.Dashboard">
+                        Dashboard
+                    </MudNavLink>
+                    <MudNavLink Href="/delivery/available-orders" Icon="@Icons.Material.Filled.Assignment">
+                        Available Orders
+                    </MudNavLink>
+                    <MudNavLink Href="/delivery/my-deliveries" Icon="@Icons.Material.Filled.LocalShipping">
+                        My Deliveries
+                    </MudNavLink>
+                    <MudNavLink Href="/delivery/earnings" Icon="@Icons.Material.Filled.AttachMoney">
+                        Earnings
+                    </MudNavLink>
+                </MudNavGroup>
+            }
+
+            @if (userRole == UserRole.Admin)
+            {
+                <MudNavGroup Text="Admin" Icon="@Icons.Material.Filled.AdminPanelSettings" Expanded="false">
+                    <MudNavLink Href="/admin/dashboard" Icon="@Icons.Material.Filled.Dashboard">
+                        Admin Dashboard
+                    </MudNavLink>
+                    <MudNavLink Href="/admin/users" Icon="@Icons.Material.Filled.People">
+                        User Management
+                    </MudNavLink>
+                    <MudNavLink Href="/admin/restaurants" Icon="@Icons.Material.Filled.Store">
+                        Restaurant Management
+                    </MudNavLink>
+                    <MudNavLink Href="/admin/orders" Icon="@Icons.Material.Filled.Assignment">
+                        Order Management
+                    </MudNavLink>
+                    <MudNavLink Href="/admin/reports" Icon="@Icons.Material.Filled.Analytics">
+                        Reports
+                    </MudNavLink>
+                </MudNavGroup>
+            }
+
+            <MudDivider Class="my-2" />
+            
+            <MudNavLink Href="/profile" Icon="@Icons.Material.Filled.Person">
+                Profile
+            </MudNavLink>
+            <MudNavLink Href="/support" Icon="@Icons.Material.Filled.Help">
+                Support
+            </MudNavLink>
+        </Authorized>
+        <NotAuthorized>
+            <MudNavLink Href="/restaurants" Icon="@Icons.Material.Filled.RestaurantMenu">
+                Browse Restaurants
+            </MudNavLink>
+            <MudNavLink Href="/about" Icon="@Icons.Material.Filled.Info">
+                About
+            </MudNavLink>
+            <MudNavLink Href="/contact" Icon="@Icons.Material.Filled.ContactMail">
+                Contact
+            </MudNavLink>
+        </NotAuthorized>
+    </AuthorizeView>
+</MudNavMenu>
+
+@code {
+    private UserRole GetUserRole(AuthenticationState context)
+    {
+        var roleClaim = context.User.FindFirst("Role");
+        if (roleClaim != null && Enum.TryParse<UserRole>(roleClaim.Value, out var role))
+        {
+            return role;
+        }
+        return UserRole.Customer; // Default fallback
+    }
+}

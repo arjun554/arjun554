@@ -22,6 +22,7 @@ public class FoodDashDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     public DbSet<Payment> Payments { get; set; }
     public DbSet<CartItem> CartItems { get; set; }
     public DbSet<Review> Reviews { get; set; }
+    public DbSet<Coupon> Coupons { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

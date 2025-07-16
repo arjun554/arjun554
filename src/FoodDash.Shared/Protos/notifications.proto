@@ -1,0 +1,91 @@
+syntax = "proto3";
+
+option csharp_namespace = "FoodDash.Shared.Grpc";
+
+package notifications;
+
+// Notification Service
+service NotificationService {
+  rpc SendPushNotification (SendPushNotificationRequest) returns (NotificationResponse);
+  rpc SendSMS (SendSMSRequest) returns (NotificationResponse);
+  rpc SendEmail (SendEmailRequest) returns (NotificationResponse);
+  rpc SendOrderUpdate (SendOrderUpdateRequest) returns (NotificationResponse);
+  rpc BroadcastMessage (BroadcastMessageRequest) returns (NotificationResponse);
+  rpc GetNotificationHistory (GetNotificationHistoryRequest) returns (NotificationHistoryResponse);
+}
+
+// Messages
+message SendPushNotificationRequest {
+  repeated int32 user_ids = 1;
+  string title = 2;
+  string message = 3;
+  string type = 4;
+  map<string, string> data = 5;
+}
+
+message SendSMSRequest {
+  repeated string phone_numbers = 1;
+  string message = 2;
+  string sender_id = 3;
+}
+
+message SendEmailRequest {
+  repeated string email_addresses = 1;
+  string subject = 2;
+  string body = 3;
+  bool is_html = 4;
+  repeated EmailAttachment attachments = 5;
+}
+
+message EmailAttachment {
+  string filename = 1;
+  bytes content = 2;
+  string content_type = 3;
+}
+
+message SendOrderUpdateRequest {
+  int32 order_id = 1;
+  string status = 2;
+  string message = 3;
+  repeated int32 recipient_user_ids = 4;
+}
+
+message BroadcastMessageRequest {
+  string title = 2;
+  string message = 3;
+  string user_role = 4; // Target specific user role
+  repeated int32 restaurant_ids = 5; // Target specific restaurants
+  string region = 6; // Target specific geographic region
+}
+
+message GetNotificationHistoryRequest {
+  int32 user_id = 1;
+  int32 page = 2;
+  int32 page_size = 3;
+  string type_filter = 4;
+}
+
+message NotificationResponse {
+  bool success = 1;
+  string message = 2;
+  int32 sent_count = 3;
+  repeated string failed_recipients = 4;
+}
+
+message NotificationHistoryResponse {
+  bool success = 1;
+  string message = 2;
+  repeated NotificationData notifications = 3;
+  int32 total_count = 4;
+}
+
+message NotificationData {
+  int32 id = 1;
+  int32 user_id = 2;
+  string title = 3;
+  string message = 4;
+  string type = 5;
+  bool is_read = 6;
+  string created_at = 7;
+  map<string, string> data = 8;
+}

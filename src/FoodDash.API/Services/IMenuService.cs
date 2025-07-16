@@ -10,4 +10,9 @@ public interface IMenuService
     Task<ApiResponse<MenuItemDto>> CreateMenuItemAsync(MenuItemDto menuItem, int restaurantId);
     Task<ApiResponse<MenuItemDto>> UpdateMenuItemAsync(int id, MenuItemDto menuItem, int restaurantId);
     Task<ApiResponse> DeleteMenuItemAsync(int id, int restaurantId);
+    
+    // Category management
+    Task<ApiResponse<MenuCategoryDto>> CreateCategoryAsync(MenuCategoryDto category, int restaurantId);
+    Task<ApiResponse<MenuCategoryDto>> UpdateCategoryAsync(int id, MenuCategoryDto category, int restaurantId);
+    Task<ApiResponse> DeleteCategoryAsync(int id, int restaurantId);
 }
