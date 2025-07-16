@@ -1,0 +1,119 @@
+syntax = "proto3";
+
+option csharp_namespace = "FoodDash.Shared.Protos";
+
+package auth;
+
+// Authentication service
+service AuthService {
+  rpc Login (LoginRequest) returns (LoginResponse);
+  rpc Register (RegisterRequest) returns (LoginResponse);
+  rpc ChangePassword (ChangePasswordRequest) returns (ChangePasswordResponse);
+  rpc ForgotPassword (ForgotPasswordRequest) returns (ForgotPasswordResponse);
+  rpc ResetPassword (ResetPasswordRequest) returns (ResetPasswordResponse);
+  rpc RefreshToken (RefreshTokenRequest) returns (LoginResponse);
+  rpc GetProfile (GetProfileRequest) returns (GetProfileResponse);
+  rpc UpdateProfile (UpdateProfileRequest) returns (UpdateProfileResponse);
+}
+
+// Login request and response
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  bool success = 1;
+  string message = 2;
+  UserProfile user = 3;
+  string token = 4;
+  string refresh_token = 5;
+  int64 expires_at = 6;
+}
+
+// Register request
+message RegisterRequest {
+  string email = 1;
+  string password = 2;
+  string confirm_password = 3;
+  string full_name = 4;
+  string phone_number = 5;
+  int32 user_type = 6; // UserType enum: Customer=0, RestaurantOwner=1, DeliveryPartner=2, Admin=3
+  string address = 7;
+}
+
+// Change password request and response
+message ChangePasswordRequest {
+  string user_id = 1;
+  string current_password = 2;
+  string new_password = 3;
+}
+
+message ChangePasswordResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// Forgot password request and response
+message ForgotPasswordRequest {
+  string email = 1;
+}
+
+message ForgotPasswordResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// Reset password request and response
+message ResetPasswordRequest {
+  string email = 1;
+  string token = 2;
+  string new_password = 3;
+}
+
+message ResetPasswordResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// Refresh token request
+message RefreshTokenRequest {
+  string refresh_token = 1;
+}
+
+// Get profile request and response
+message GetProfileRequest {
+  string user_id = 1;
+}
+
+message GetProfileResponse {
+  bool success = 1;
+  string message = 2;
+  UserProfile user = 3;
+}
+
+// Update profile request and response
+message UpdateProfileRequest {
+  string user_id = 1;
+  string full_name = 2;
+  string phone_number = 3;
+  string address = 4;
+}
+
+message UpdateProfileResponse {
+  bool success = 1;
+  string message = 2;
+  UserProfile user = 3;
+}
+
+// User profile message
+message UserProfile {
+  string id = 1;
+  string email = 2;
+  string full_name = 3;
+  string phone_number = 4;
+  int32 user_type = 5;
+  string address = 6;
+  bool is_email_verified = 7;
+  int64 created_at = 8;
+}

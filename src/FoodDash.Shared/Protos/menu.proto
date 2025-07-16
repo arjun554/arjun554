@@ -1,0 +1,189 @@
+syntax = "proto3";
+
+option csharp_namespace = "FoodDash.Shared.Protos";
+
+package menu;
+
+// Menu service
+service MenuService {
+  rpc GetMenuByRestaurant (GetMenuByRestaurantRequest) returns (GetMenuByRestaurantResponse);
+  rpc GetMenuItem (GetMenuItemRequest) returns (GetMenuItemResponse);
+  rpc CreateCategory (CreateCategoryRequest) returns (CreateCategoryResponse);
+  rpc UpdateCategory (UpdateCategoryRequest) returns (UpdateCategoryResponse);
+  rpc DeleteCategory (DeleteCategoryRequest) returns (DeleteCategoryResponse);
+  rpc CreateMenuItem (CreateMenuItemRequest) returns (CreateMenuItemResponse);
+  rpc UpdateMenuItem (UpdateMenuItemRequest) returns (UpdateMenuItemResponse);
+  rpc DeleteMenuItem (DeleteMenuItemRequest) returns (DeleteMenuItemResponse);
+  rpc UpdateMenuItemAvailability (UpdateMenuItemAvailabilityRequest) returns (UpdateMenuItemAvailabilityResponse);
+}
+
+// Get menu by restaurant request and response
+message GetMenuByRestaurantRequest {
+  int32 restaurant_id = 1;
+}
+
+message GetMenuByRestaurantResponse {
+  bool success = 1;
+  string message = 2;
+  repeated MenuCategoryDto data = 3;
+}
+
+// Get menu item request and response
+message GetMenuItemRequest {
+  int32 item_id = 1;
+}
+
+message GetMenuItemResponse {
+  bool success = 1;
+  string message = 2;
+  MenuItemDto data = 3;
+}
+
+// Create category request and response
+message CreateCategoryRequest {
+  int32 restaurant_id = 1;
+  string owner_id = 2;
+  string name = 3;
+  string description = 4;
+  int32 sort_order = 5;
+  bool is_active = 6;
+}
+
+message CreateCategoryResponse {
+  bool success = 1;
+  string message = 2;
+  MenuCategoryDto data = 3;
+}
+
+// Update category request and response
+message UpdateCategoryRequest {
+  int32 category_id = 1;
+  string owner_id = 2;
+  string name = 3;
+  string description = 4;
+  int32 sort_order = 5;
+  bool is_active = 6;
+}
+
+message UpdateCategoryResponse {
+  bool success = 1;
+  string message = 2;
+  MenuCategoryDto data = 3;
+}
+
+// Delete category request and response
+message DeleteCategoryRequest {
+  int32 category_id = 1;
+  string owner_id = 2;
+}
+
+message DeleteCategoryResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// Create menu item request and response
+message CreateMenuItemRequest {
+  int32 category_id = 1;
+  string owner_id = 2;
+  string name = 3;
+  string description = 4;
+  double price = 5;
+  string image_url = 6;
+  bool is_vegetarian = 7;
+  bool is_vegan = 8;
+  bool is_gluten_free = 9;
+  bool is_spicy = 10;
+  bool is_available = 11;
+  int32 preparation_time = 12;
+  string ingredients = 13;
+  string nutritional_info = 14;
+}
+
+message CreateMenuItemResponse {
+  bool success = 1;
+  string message = 2;
+  MenuItemDto data = 3;
+}
+
+// Update menu item request and response
+message UpdateMenuItemRequest {
+  int32 item_id = 1;
+  string owner_id = 2;
+  string name = 3;
+  string description = 4;
+  double price = 5;
+  string image_url = 6;
+  bool is_vegetarian = 7;
+  bool is_vegan = 8;
+  bool is_gluten_free = 9;
+  bool is_spicy = 10;
+  bool is_available = 11;
+  int32 preparation_time = 12;
+  string ingredients = 13;
+  string nutritional_info = 14;
+}
+
+message UpdateMenuItemResponse {
+  bool success = 1;
+  string message = 2;
+  MenuItemDto data = 3;
+}
+
+// Delete menu item request and response
+message DeleteMenuItemRequest {
+  int32 item_id = 1;
+  string owner_id = 2;
+}
+
+message DeleteMenuItemResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// Update menu item availability request and response
+message UpdateMenuItemAvailabilityRequest {
+  int32 item_id = 1;
+  string owner_id = 2;
+  bool is_available = 3;
+}
+
+message UpdateMenuItemAvailabilityResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// Menu category DTO message
+message MenuCategoryDto {
+  int32 id = 1;
+  string name = 2;
+  string description = 3;
+  int32 restaurant_id = 4;
+  int32 sort_order = 5;
+  bool is_active = 6;
+  repeated MenuItemDto menu_items = 7;
+  int64 created_at = 8;
+  int64 updated_at = 9;
+}
+
+// Menu item DTO message
+message MenuItemDto {
+  int32 id = 1;
+  string name = 2;
+  string description = 3;
+  double price = 4;
+  string image_url = 5;
+  bool is_vegetarian = 6;
+  bool is_vegan = 7;
+  bool is_gluten_free = 8;
+  bool is_spicy = 9;
+  bool is_available = 10;
+  int32 preparation_time = 11;
+  string ingredients = 12;
+  string nutritional_info = 13;
+  int32 category_id = 14;
+  double rating = 15;
+  int32 total_reviews = 16;
+  int64 created_at = 17;
+  int64 updated_at = 18;
+}

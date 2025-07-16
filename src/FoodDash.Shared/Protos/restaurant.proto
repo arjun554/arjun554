@@ -1,0 +1,148 @@
+syntax = "proto3";
+
+option csharp_namespace = "FoodDash.Shared.Protos";
+
+package restaurant;
+
+// Restaurant service
+service RestaurantService {
+  rpc GetRestaurants (GetRestaurantsRequest) returns (GetRestaurantsResponse);
+  rpc GetRestaurantById (GetRestaurantByIdRequest) returns (GetRestaurantByIdResponse);
+  rpc CreateRestaurant (CreateRestaurantRequest) returns (CreateRestaurantResponse);
+  rpc UpdateRestaurant (UpdateRestaurantRequest) returns (UpdateRestaurantResponse);
+  rpc DeleteRestaurant (DeleteRestaurantRequest) returns (DeleteRestaurantResponse);
+  rpc GetMyRestaurant (GetMyRestaurantRequest) returns (GetMyRestaurantResponse);
+  rpc UpdateRestaurantStatus (UpdateRestaurantStatusRequest) returns (UpdateRestaurantStatusResponse);
+}
+
+// Get restaurants request and response
+message GetRestaurantsRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string search_term = 3;
+}
+
+message GetRestaurantsResponse {
+  bool success = 1;
+  string message = 2;
+  PagedRestaurantResult data = 3;
+}
+
+message PagedRestaurantResult {
+  repeated RestaurantDto items = 1;
+  int32 total_count = 2;
+  int32 page = 3;
+  int32 page_size = 4;
+  int32 total_pages = 5;
+}
+
+// Get restaurant by ID request and response
+message GetRestaurantByIdRequest {
+  int32 restaurant_id = 1;
+}
+
+message GetRestaurantByIdResponse {
+  bool success = 1;
+  string message = 2;
+  RestaurantDto data = 3;
+}
+
+// Create restaurant request and response
+message CreateRestaurantRequest {
+  string owner_id = 1;
+  string name = 2;
+  string description = 3;
+  string address = 4;
+  string phone_number = 5;
+  string email = 6;
+  string opening_hours = 7;
+  string image_url = 8;
+  bool is_active = 9;
+  double delivery_fee = 10;
+  int32 minimum_order_amount = 11;
+  int32 estimated_delivery_time = 12;
+}
+
+message CreateRestaurantResponse {
+  bool success = 1;
+  string message = 2;
+  RestaurantDto data = 3;
+}
+
+// Update restaurant request and response
+message UpdateRestaurantRequest {
+  int32 restaurant_id = 1;
+  string owner_id = 2;
+  string name = 3;
+  string description = 4;
+  string address = 5;
+  string phone_number = 6;
+  string email = 7;
+  string opening_hours = 8;
+  string image_url = 9;
+  bool is_active = 10;
+  double delivery_fee = 11;
+  int32 minimum_order_amount = 12;
+  int32 estimated_delivery_time = 13;
+}
+
+message UpdateRestaurantResponse {
+  bool success = 1;
+  string message = 2;
+  RestaurantDto data = 3;
+}
+
+// Delete restaurant request and response
+message DeleteRestaurantRequest {
+  int32 restaurant_id = 1;
+  string owner_id = 2;
+}
+
+message DeleteRestaurantResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// Get my restaurant request and response
+message GetMyRestaurantRequest {
+  string owner_id = 1;
+}
+
+message GetMyRestaurantResponse {
+  bool success = 1;
+  string message = 2;
+  RestaurantDto data = 3;
+}
+
+// Update restaurant status request and response
+message UpdateRestaurantStatusRequest {
+  int32 restaurant_id = 1;
+  string owner_id = 2;
+  bool is_active = 3;
+}
+
+message UpdateRestaurantStatusResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// Restaurant DTO message
+message RestaurantDto {
+  int32 id = 1;
+  string name = 2;
+  string description = 3;
+  string address = 4;
+  string phone_number = 5;
+  string email = 6;
+  string opening_hours = 7;
+  string image_url = 8;
+  bool is_active = 9;
+  double delivery_fee = 10;
+  int32 minimum_order_amount = 11;
+  int32 estimated_delivery_time = 12;
+  double rating = 13;
+  int32 total_reviews = 14;
+  string owner_id = 15;
+  int64 created_at = 16;
+  int64 updated_at = 17;
+}
